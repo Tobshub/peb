@@ -10,7 +10,7 @@ const (
 type ExplosionEffect struct {
 	FrameRect    rl.Rectangle
 	Pos          rl.Vector2
-	FrameCounter int
+	FrameCounter float32
 	Active       bool
 }
 
@@ -44,10 +44,10 @@ func (e *ExplosionEffect) Update() {
 		return
 	}
 
-	currentFrame := e.FrameCounter % EXPLOSION_TEXTURE_NUM_FRAMES_PER_LINE
-	currentLine := int(e.FrameCounter / EXPLOSION_TEXTURE_NUM_FRAMES_PER_LINE)
+	currentFrame := int(e.FrameCounter) % EXPLOSION_TEXTURE_NUM_FRAMES_PER_LINE
+	currentLine := int(e.FrameCounter) / EXPLOSION_TEXTURE_NUM_FRAMES_PER_LINE
 
 	e.FrameRect.X = ExplosionFrameWidth * float32(currentFrame)
 	e.FrameRect.Y = ExplosionFrameHeight * float32(currentLine)
-	e.FrameCounter++
+	e.FrameCounter += .5
 }
