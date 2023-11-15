@@ -50,6 +50,7 @@ func (b *Button) Update(mouse *rl.Vector2) {
 	if mouse != nil {
 		if b.MouseClicked(*mouse) {
 			b.Hidden = true
+			SCORE += 10
 			EXPLOSIONS = append(EXPLOSIONS,
 				NewExplosionEffect(*mouse))
 			return
@@ -63,6 +64,7 @@ func (b *Button) Update(mouse *rl.Vector2) {
 		b.Pos.X > SCREEN_WIDTH ||
 		b.Pos.Y > SCREEN_HEIGHT {
 		b.Hidden = true
+		SCORE -= 10
 	}
 }
 

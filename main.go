@@ -1,22 +1,25 @@
 package main
 
-import rl "github.com/gen2brain/raylib-go/raylib"
+import (
+	"fmt"
 
-const (
-	SCREEN_WIDTH  = 800
-	SCREEN_HEIGHT = 450
-
-	GAME_SPEED = 80
+	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 var (
+	SCREEN_WIDTH  float32 = 800
+	SCREEN_HEIGHT float32 = 450
+
+	GAME_SPEED = 12
+
 	Explosion            rl.Texture2D
 	ExplosionFrameWidth  float32
 	ExplosionFrameHeight float32
 )
 
 func main() {
-	rl.InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "PEB")
+	rl.SetConfigFlags(rl.FlagWindowResizable)
+	rl.InitWindow(int32(SCREEN_WIDTH), int32(SCREEN_HEIGHT), "PEB")
 	defer rl.CloseWindow()
 
 	Explosion = rl.LoadTexture("resources/explosion.png")
@@ -41,11 +44,22 @@ func main() {
 var (
 	BUTTONS    = []*Button{}
 	EXPLOSIONS = []*ExplosionEffect{}
+
+	SCORE = 0
 )
 
-func InitGame() { BUTTONS = []*Button{} }
+func InitGame() {
+	SCORE = 0
+	BUTTONS = []*Button{}
+	EXPLOSIONS = []*ExplosionEffect{}
+}
 
 func DrawGame() {
+	scoreText := fmt.Sprintf("Score: %d", SCORE)
+	fontSize := int32(24)
+	rl.DrawText(scoreText, rl.MeasureText(scoreText, fontSize)/2,
+		fontSize/2, fontSize, rl.Gray)
+
 	for _, e := range EXPLOSIONS {
 		e.Draw()
 	}
@@ -58,8 +72,13 @@ func DrawGame() {
 var frame = 0
 
 func UpdateGame() {
+	if rl.IsWindowResized() {
+		SCREEN_WIDTH = float32(rl.GetScreenWidth())
+		SCREEN_HEIGHT = float32(rl.GetScreenHeight())
+	}
+
 	frame++
-	if frame%GAME_SPEED == 0 {
+	if frame%(1000/GAME_SPEED) == 0 {
 		newButton := NewButton(RandomSpawnPoint())
 		BUTTONS = append(BUTTONS, newButton)
 	}
