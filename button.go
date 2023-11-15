@@ -104,16 +104,24 @@ const (
 )
 
 func RandV(pos rl.Vector2) (v rl.Vector2) {
-	if pos.X < SCREEN_WIDTH/2 {
+	if pos.X < SCREEN_WIDTH/4 {
+		v.X = RandFloat(MinSpeed+MinSpeed, MaxSpeed)
+	} else if pos.X < SCREEN_WIDTH/2 {
 		v.X = RandFloat(MinSpeed, MaxSpeed)
-	} else {
+	} else if pos.X < SCREEN_WIDTH-(SCREEN_WIDTH/4) {
 		v.X = RandFloat(-1*MaxSpeed, -1*MinSpeed)
+	} else {
+		v.X = RandFloat(-1*(MaxSpeed+MinSpeed), -1*MinSpeed)
 	}
 
-	if pos.Y < SCREEN_HEIGHT/2 {
+	if pos.Y < SCREEN_HEIGHT/4 {
+		v.Y = RandFloat(MinSpeed+MinSpeed, MaxSpeed)
+	} else if pos.Y < SCREEN_HEIGHT/2 {
 		v.Y = RandFloat(MinSpeed, MaxSpeed)
-	} else {
+	} else if pos.Y < SCREEN_HEIGHT-(SCREEN_HEIGHT/4) {
 		v.Y = RandFloat(-1*MaxSpeed, -1*MinSpeed)
+	} else {
+		v.Y = RandFloat(-1*(MaxSpeed+MinSpeed), -1*MinSpeed)
 	}
 	return
 }
