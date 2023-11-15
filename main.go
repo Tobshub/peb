@@ -10,7 +10,7 @@ var (
 	SCREEN_WIDTH  float32 = 800
 	SCREEN_HEIGHT float32 = 450
 
-	GAME_SPEED = 12
+	GAME_SPEED = 5
 
 	Explosion            rl.Texture2D
 	ExplosionFrameWidth  float32
@@ -69,7 +69,10 @@ func DrawGame() {
 	}
 }
 
-var frame = 0
+var (
+	frame          = 0
+	canChangeSpeed = true
+)
 
 func UpdateGame() {
 	if rl.IsWindowResized() {
@@ -105,5 +108,15 @@ func UpdateGame() {
 			EXPLOSIONS = append(EXPLOSIONS[:idx], EXPLOSIONS[idx+1:]...)
 			idx--
 		}
+	}
+
+	// if player loses points till this happens
+	// the speed increases, which is not intended
+	// but oh well :shrug:
+	if canChangeSpeed && SCORE%500 == 0 {
+		GAME_SPEED += 2
+		canChangeSpeed = false
+	} else if !canChangeSpeed && SCORE%500 != 0 {
+		canChangeSpeed = true
 	}
 }
